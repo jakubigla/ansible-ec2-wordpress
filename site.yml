@@ -12,4 +12,5 @@
   gather_facts: True
   roles:
     - web_server
+    - ssl
     - wordpress

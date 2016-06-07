@@ -1,4 +1,3 @@
-
 - name: Create an EC2 instance
   ec2:
     keypair: "{{ keypair }}"
