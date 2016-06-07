@@ -11,10 +11,10 @@
   file: path=/var/www/html owner="www-data" group="www-data"
 
 - name: Create database
-  mysql_db: name=wordpress state=present
+  mysql_db: name={{ db_name }} state=present
 
 - name: Create database user
-  mysql_user: name=lionel password=messi priv=wordpress.*:ALL state=present host=localhost
+  mysql_user: name={{ db_user }} password={{ db_pass }} priv="{{ db_name }}.*:ALL" state=present host=localhost
 
 - name: Copy config to remote host
-  copy: src=wp-config.php dest=/var/www/html
+  template: src=wp-config.php.j2 dest=/var/www/html/wp-config.php owner="www-data" group="www-data"

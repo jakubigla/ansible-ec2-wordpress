@@ -1,7 +1,0 @@
-env: "test" # env name, this will be used as an inventory file name
-app_code_user: "ubuntu" # remote user
-aws_region: eu-west-1 # AWS region, where instance will be created
-instance_type: t2.micro  # AWS instance type
-ami: ami-f95ef58a  # AMI id, example uses Ubuntu 14.04.1 LTS
-project_name: "lamp"
-keypair: "valtech"

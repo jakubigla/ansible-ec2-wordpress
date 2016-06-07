@@ -2,17 +2,13 @@
   hosts: localhost
   connection: local
   gather_facts: False
-  vars_files:
-    - vars/global.yml
   roles:
     - ec2
 
-- name: Configure
-  vars_files:
-    - vars/global.yml
+- name: Configure web server and deploy wordpress
   hosts: launched
   become: True
-  remote_user: ubuntu
+  remote_user: "{{ remote_user }}"
   gather_facts: True
   roles:
     - web_server
