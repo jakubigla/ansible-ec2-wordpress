@@ -1,0 +1,20 @@
+- name: Download and extract Wordpress archive
+  unarchive: src=https://wordpress.org/latest.tar.gz dest=/tmp copy=no
+
+- name: Remove default site
+  file: path=/var/www/html state=absent
+
+- name: Move Wordpress to valid directory and set permissions
+  command: creates="/var/www/html" mv /tmp/wordpress /var/www/html
+
+- name: Change permissions
+  file: path=/var/www/html owner="www-data" group="www-data"
+
+- name: Create database
+  mysql_db: name=wordpress state=present
+
+- name: Create database user
+  mysql_user: name=lionel password=messi priv=wordpress.*:ALL state=present host=localhost
+
+- name: Copy config to remote host
+  copy: src=wp-config.php dest=/var/www/html

@@ -1,0 +1,19 @@
+- name: Provision EC2 instance for LAMP stack
+  hosts: localhost
+  connection: local
+  gather_facts: False
+  vars_files:
+    - vars/global.yml
+  roles:
+    - ec2
+
+- name: Configure
+  vars_files:
+    - vars/global.yml
+  hosts: launched
+  become: True
+  remote_user: ubuntu
+  gather_facts: True
+  roles:
+    - web_server
+    - wordpress

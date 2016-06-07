@@ -1,0 +1,17 @@
+- name: install apache2
+  apt: name=apache2 state=latest update_cache=yes
+
+- name: Install MySQL
+  apt: package={{ item }} state=installed force=yes
+  with_items:
+    - mysql-server
+    - libapache2-mod-auth-mysql
+    - python-mysqldb
+    - php5-mysql
+
+- name: Install PHP
+  apt: package={{ item }} state=installed force=yes
+  with_items:
+    - php5
+    - libapache2-mod-php5
+    - php5-mcrypt
