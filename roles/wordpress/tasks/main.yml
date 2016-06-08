@@ -1,20 +1,3 @@
-- name: Download and extract Wordpress archive
-  unarchive: src=https://wordpress.org/latest.tar.gz dest=/tmp copy=no
-
-- name: Remove default site
-  file: path=/var/www/html state=absent
-
-- name: Move Wordpress to valid directory and set permissions
-  command: creates="/var/www/html" mv /tmp/wordpress /var/www/html
-
-- name: Change permissions
-  file: path=/var/www/html owner="www-data" group="www-data"
-
-- name: Create database
-  mysql_db: name={{ db_name }} state=present
-
-- name: Create database user
-  mysql_user: name={{ db_user }} password={{ db_pass }} priv="{{ db_name }}.*:ALL" state=present host=localhost
-
-- name: Copy config to remote host
-  template: src=wp-config.php.j2 dest=/var/www/html/wp-config.php owner="www-data" group="www-data"
+- include: deploy.yml
+- include: setup_db.yml
+- include: setup_hosts.yml

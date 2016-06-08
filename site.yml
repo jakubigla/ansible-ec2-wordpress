@@ -11,6 +11,9 @@
   remote_user: "{{ remote_user }}"
   gather_facts: True
   roles:
+    - common
+    - php
+    - database
     - web_server
     - ssl
     - wordpress
