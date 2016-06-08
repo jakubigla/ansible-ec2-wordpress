@@ -3,3 +3,5 @@
   with_items:
     - mysql-server
     - python-mysqldb
+
+- include: secure.yml
