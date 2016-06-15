@@ -1,0 +1,64 @@
+- name: Create VPC network
+  ec2_vpc:
+    region: "{{ vpc_region }}"
+    state:  present
+    resource_tags: { "Name":"{{ vpc_name }}-vpc", "Environment":"{{ env }}" }
+    internet_gateway: yes
+    cidr_block: 10.0.0.0/24
+    subnets:
+      - cidr: 10.0.0.0/25
+        az: "{{ vpc_region }}a"
+        resource_tags: {"Type":"Public", "Environment":"{{ env }}", "Name":"{{ vpc_name }}-public_subnet", "Alias": "public_subnet" }
+      - cidr: 10.0.0.128/25
+        az: "{{ vpc_region }}b"
+        resource_tags: {"Type":"Private", "Environment":"{{ env }}", "Name":"{{ vpc_name }}-private_subnet", "Alias": "private_subnet" }
+  register: vpc
+
+- name: Tag the Internet Gateway
+  ec2_tag:
+    resource: "{{ vpc.igw_id }}"
+    region: "{{ vpc_region }}"
+    state: present
+    tags:
+      Name: "{{ vpc_name }}-igw"
+      Environment: "{{ env }}"
+  register: igw
+
+- name: Set up Public Subnets Route Table
+  ec2_vpc_route_table:
+    vpc_id: "{{ vpc.vpc_id }}"
+    region: "{{ vpc_region }}"
+    state: present
+    tags:
+      Name: "Public-RT-for-{{ vpc_name }}-vpc"
+    subnets:
+      "{{ vpc.subnets | get_public_subnets_ids('Type','Public') }}"
+    routes:
+      - dest: 0.0.0.0/0
+        gateway_id: "{{ vpc.igw_id }}"
+  register: public_rtb
+
+- name: "Create {{ vpc_name }}.yml file inside the secret_vars directory"
+  lineinfile:
+    dest: "../secret_vars/{{ vpc_name }}.yml"
+    line: "---"
+    create: yes
+
+- name: "Write vpc info to {{ vpc_name }}.yml file inside the secret_vars directory"
+  lineinfile:
+    dest: "../secret_vars/{{ vpc_name }}.yml"
+    regexp: "^{{ item.regexp }}"
+    line: "{{ item.regexp }}: {{ '\"' + item.line + '\"' }}"
+  with_items:
+    - { regexp: 'vpc_id', line: '{{ vpc.vpc_id }}' }
+    - { regexp: 'igw_id', line: '{{ vpc.igw_id }}' }
+    - { regexp: 'route_table_id', line: '{{ public_rtb.route_table.id }}' }
+
+- name: "Write public and private subnets ids to {{ vpc_name }}.yml file inside the secret_vars directory"
+  lineinfile:
+    dest: "../secret_vars/{{ vpc_name }}.yml"
+    regexp: "^{{ item.resource_tags.Alias }}_id"
+    line: "{{ item.resource_tags.Alias }}_id: {{ '\"' + item.id + '\"' }}"
+  with_items: "{{ vpc.subnets }}"
+
+- include_vars: "../secret_vars/{{ vpc_name }}.yml"

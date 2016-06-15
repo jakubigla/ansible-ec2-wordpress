@@ -1,7 +1,7 @@
 - name: Create an EC2 instance
   ec2:
-    keypair: "{{ keypair }}"
-    region: "{{ aws_region }}"
+    keypair: "{{ ec2_key_name }}"
+    region: "{{ vpc_region }}"
     group_id: "{{ group_id }}"
     instance_type: "{{ instance_type }}"
     image: "{{ ami }}"
@@ -15,8 +15,8 @@
     exact_count: "{{ instance_count }}"
   register: ec2
 
-- name: Add new instances to host group
-  add_host: hostname={{ item.public_dns_name }} groupname=launched
+- name: Add new instances to host groupx§
+  add_host: hostname={{ item.public_ip }} groupname=launched
   with_items: "{{ ec2.instances }}"
 
 - name: Wait for SSH to come up

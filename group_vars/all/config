@@ -1,0 +1,7 @@
+env: "testing"
+project_name: "ha-wordpress"
+
+vpc_name: "{{ project_name }}-{{ env }}"
+vpc_region: eu-west-1 # Ireland
+
+ec2_key_name: "{{ project_name }}-{{ env }}-key"

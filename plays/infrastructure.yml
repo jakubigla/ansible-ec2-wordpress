@@ -1,0 +1,8 @@
+- name: Configure environment
+  hosts: localhost
+  connection: local
+  gather_facts: False
+  roles:
+    - aws_vpc
+    - aws_sg
+    - aws_ec2key
