@@ -1,0 +1,11 @@
+- name: Download and extract Wordpress archive
+  unarchive: src=https://wordpress.org/latest.tar.gz dest=/tmp copy=no
+
+- name: Clean target directory
+  shell: rm -rf {{ app_dir }}/*
+
+- name: Move to a valid location
+  shell: mv -f /tmp/wordpress/* {{ app_dir }}
+
+- name: Copy config to remote host
+  template: src=wp-config.php.j2 dest={{ app_dir }}/wp-config.php

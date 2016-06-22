@@ -1,7 +1,20 @@
-env: "testing"
 project_name: "ha-wordpress"
 
 vpc_name: "{{ project_name }}-{{ env }}"
 vpc_region: eu-west-1 # Ireland
 
 ec2_key_name: "{{ project_name }}-{{ env }}-key"
+
+ec2_web_instance_type: t2.micro
+ec2_web_instance_count: 1
+ec2_web_ami_id: "ami-f95ef58a" #ubuntu
+
+ec2_db_instance_type: t2.micro
+ec2_db_instance_count: 1
+ec2_db_ami_id: "ami-f95ef58a" #ubuntu
+
+app_dir: "/usr/share/nginx/wordpress"
+app_document_root: "{{ app_dir }}"
+
+nginx_conf_path: "/etc/nginx/"
+

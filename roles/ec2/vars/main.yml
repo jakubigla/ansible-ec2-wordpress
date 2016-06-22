@@ -1,7 +1,0 @@
-env           : "test"
-aws_region    : "eu-west-1"
-instance_type : "t2.micro"
-instance_count: 1
-ami           : "ami-f95ef58a"
-keypair       : "valtech"
-group_id      : "sg-3d3a0e59"

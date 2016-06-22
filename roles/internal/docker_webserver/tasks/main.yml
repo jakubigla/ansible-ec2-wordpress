@@ -1,0 +1,11 @@
+- name: create config dir for nginx
+  file: state=directory path={{ nginx_conf_path }}
+
+- name: Copy nginx config file
+  template: src=default.conf.j2 dest={{ nginx_conf_path }}/default.conf
+
+- name: Copy compose file
+  template: src=docker-compose.yml.j2 dest=/root/docker-compose.yml
+
+- name: Run docker compose
+  command: docker-compose -f /root/docker-compose.yml up -d

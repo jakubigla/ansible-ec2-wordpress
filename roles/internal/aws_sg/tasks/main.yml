@@ -1,0 +1,26 @@
+- name: Creating an EC2 Security Groups inside the Mentioned VPC
+  ec2_group:
+    name: "sshable-sg"
+    description: "can connect via ssh"
+    region: "{{ vpc_region }}"
+    vpc_id: "{{ vpc_id }}"
+    state: present
+    rules:
+      - proto: tcp
+        from_port: 22
+        to_port: 22
+        cidr_ip: 0.0.0.0/0
+      - proto: tcp
+        from_port: 80
+        to_port: 80
+        cidr_ip: 0.0.0.0/0
+  register: aws_sg
+
+- name: "Write public and private subnets ids to {{ vpc_name }}.yml file inside the secret_vars directory"
+  lineinfile:
+    dest: "../secret_vars/{{ vpc_name }}.yml"
+    regexp: "ec2_sshable_sg_id"
+    line: "ec2_sshable_sg_id: {{ '\"' + aws_sg.group_id + '\"' }}"
+    create: yes
+
+- include_vars: "../secret_vars/{{ vpc_name }}.yml"

@@ -1,0 +1,10 @@
+[localhost]
+127.0.0.1
+
+[tag_Role_webserver]
+
+[webservers:children]
+tag_Role_webserver
+
+[all:vars]
+env=testing

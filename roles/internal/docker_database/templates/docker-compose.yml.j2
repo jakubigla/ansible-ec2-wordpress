@@ -1,0 +1,26 @@
+version: '2'
+
+services:
+  data:
+    image: "gliderlabs/alpine:latest"
+    command: "ls"
+    volumes:
+      - "{{ app_dir }}:/usr/share/nginx/wordpress"
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    tty: true
+    restart: always
+    volumes_from:
+      - data
+    volumes:
+      - "{{ nginx_conf_path }}:/etc/nginx/conf.d"
+
+  php:
+    image: php:7-fpm-alpine
+    volumes_from:
+      - data
+    tty: true
+    restart: always

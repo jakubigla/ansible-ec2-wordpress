@@ -1,0 +1,9 @@
+- name: Configure web servers
+  hosts: webservers
+  become: True
+  remote_user: "{{ remote_user }}"
+  gather_facts: True
+  roles:
+    - angstwad.docker_ubuntu
+    - docker_webserver
+    - wordpress

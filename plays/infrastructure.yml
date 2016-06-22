@@ -6,3 +6,4 @@
     - aws_vpc
     - aws_sg
     - aws_ec2key
+    - aws_webserver
