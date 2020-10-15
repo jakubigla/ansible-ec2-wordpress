@@ -1,5 +1,6 @@
 - name: Install PHP
-  apt: package={{ item }} state=latest force=yes
-  with_items:
-    - php
-    - php-mysql
+  package:
+    name:
+      - php
+      - php-mysql
+    state: latest
