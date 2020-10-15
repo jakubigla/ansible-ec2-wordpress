@@ -1,3 +1,3 @@
 project_name: "wordpress"
-host_name: "greenorchardmusic.com"
+host_name: "example.com"
 remote_user: ubuntu
