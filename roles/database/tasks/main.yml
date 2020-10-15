@@ -1,7 +1,8 @@
 - name: Install MySQL
-  apt: package={{ item }} state=latest force=yes
-  with_items:
-    - mysql-server
-    - python3-mysqldb
+  package:
+    name:
+      - mysql-server
+      - python3-mysqldb
+    state: latest
 
 - include: secure.yml
