@@ -1,7 +1,7 @@
-env           : "greenorchard"
+env           : "example"
 aws_region    : "us-east-2"
 instance_type : "t2.micro"
 instance_count: 1
 ami           : "ami-07efac79022b86107"
-keypair       : "jeffapplewhite-kp"
+keypair       : "example-kp.pem"
 group_id      : "sg-02a4fd7de93fc2e5a"
